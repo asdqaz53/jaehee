@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>에코이코</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .game-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            text-align: center;
+        }
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .score {
+            margin-top: 10px;
+            font-size: 1.2em;
+        <h1>Image Formatting</h1>
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>에코이코</h1>
+        <p id="story">당신은 대통령입니다. 당신은 선택지를 골라 지구 기온을 낮춰야합니다. 동시에 재정도 적정선을 유지해야 합니다. 지구평균기온이 2도 오르거나 재정이 100조가 깎이면 실패합니다.</p>
+        <div id="choices">
+            <button onclick="startGame()">게임 시작</button>
+        </div>
+        <div class="score">지구기온: <span id="earthTemperature">12</span>℃</div>
+        <div class="score">재정: <span id="finance">450</span>조</div>
+    </div>
+
+    <script>
+        let earthTemperature = 12;
+        let finance = 450;
+        const storyElement = document.getElementById('story');
+        const choicesElement = document.getElementById('choices');
+        const earthTemperatureElement = document.getElementById('earthTemperature');
+        const financeElement = document.getElementById('finance');
+
+        function updateEarthTemperature(change) {
+            earthTemperature += change;
+            earthTemperatureElement.textContent = earthTemperature.toFixed(1);
+        }
+
+        function updateFinance(change) {
+            finance += change;
+            financeElement.textContent = finance;
+        }
+
+        function resetGame() {
+            earthTemperature = 12;
+            finance = 450;
+            updateEarthTemperature(0);
+            updateFinance(0);
+            storyElement.textContent = "당신은 대통령입니다. 당신은 선택지를 골라 지구 기온을 낮춰야합니다. 동시에 재정도 적정선을 유지해야 합니다. 지구평균기온이 2도 오르거나 재정이 100조가 깎이면 실패합니다.";
+            choicesElement.innerHTML = `<button onclick="startGame()">게임 시작</button>`;
+        }
+
+        function startGame() {
+            storyElement.textContent = "S기업이 공장을 건설하려 합니다. 건설을 허가하거나 허가하지 않을 수 있습니다. 어떻게 하시겠습니까?";
+            choicesElement.innerHTML = `
+                <button onclick="choosePath('stayHome', -0.2, -5)">불허하기</button>
+                <button onclick="choosePath('explore', 0.2, 5)">허가하기</button>
+        
+        <style>
+        body {
+         background-image:url('aerial-view-of-green-forest.jpg');
+        }   
+            `;
+        
+        }
+        function choosePath(path, tempChange, financeChange) {
+            updateEarthTemperature(tempChange);
+            updateFinance(financeChange);
+
+            if (earthTemperature >= 14 || finance <= 350) {
+                storyElement.textContent = "게임 오버! 지구 평균 기온이 2도 올랐거나 재정이 100조가 깎였습니다. 다시 시작하시겠습니까?";
+                choicesElement.innerHTML = `<button onclick="resetGame()">다시 시작</button>`;
+                return;
+            }
+
+            if (path === 'explore') {
+                storyElement.textContent = "공장 건설을 허가하여 지구 기온이 올랐지만 재정이 증가하였습니다. 쓰레기 처리 문제가 발생하였습니다. 친환경 소각장을 건설하거나 다른 지역과 계약을 맺어 쓰레기 매립지를 건설할 수 있습니다. 어떻게 하시겠습니까?";
+                choicesElement.innerHTML = `
+                    <button onclick="choosePath('buildIncinerator', -0.2, -5)">소각장 건설하기</button>
+                    <button onclick="choosePath('landfillContract', 0.2, 5)">매립지 계약 맺기</button>
+                <style>
+                body {
+                    background-image:url('scrapyard-70908_1920.jpg');
+                }
+                `;
+            } else if (path === 'stayHome') {
+                storyElement.textContent = "공장 건설을 불허하여 기온이 감소했으나 재정이 감소하였습니다. 쓰레기 처리 문제가 발생하였습니다. 친환경 소각장을 건설하거나 다른 지역과 계약을 맺어 쓰레기 매립지를 건설할 수 있습니다. 어떻게 하시겠습니까?";
+                choicesElement.innerHTML = `
+                    <button onclick="choosePath('buildIncinerator', -0.2, -5)">소각장 건설하기</button>
+                    <button onclick="choosePath('landfillContract', 0.2, 5)">매립지 계약 맺기</button>
+                <style>
+                body {
+                    background-image:url('scrapyard-70908_1920.jpg');
+                }
+                `;
+            } else if (path === 'buildIncinerator') {
+                storyElement.textContent = "친환경 소각장을 건설하기로 결정했습니다. 지구 기온은 감소했지만, 재정이 줄었습니다. 수소자동차 산업의 연구 지원금 확충 요구가 들어왔습니다. 지원금을 확충하거나 유지할 수 있습니다. 어떻게 하시겠습니까?";
+                choicesElement.innerHTML = `
+                    <button onclick="choosePath('expandHydrogenCarFunds', -0.2, -5)">확충하기</button>
+                    <button onclick="choosePath('maintainHydrogenCarFunds', 0.2, 5)">유지하기</button>
+                <style>
+                body {
+                    background-image:url('thumb_520390_1602148014_2.jpg');
+                    background-repeat: no-repeat;
+                    background-size: 100% 100%;
+                }
+                `;
+            } else if (path === 'landfillContract') {
+                storyElement.textContent = "쓰레기 매립지 계약을 맺기로 결정했습니다. 재정은 유지되었지만, 지구 기온이 상승하였습니다. 수소자동차 산업의 연구 지원금 확충 요구가 들어왔습니다. 지원금을 확충하거나 유지할 수 있습니다. 어떻게 하시겠습니까?";
+                choicesElement.innerHTML = `
+                    <button onclick="choosePath('expandHydrogenCarFunds', -0.2, -5)">확충하기</button>
+                    <button onclick="choosePath('maintainHydrogenCarFunds', 0.2, 5)">유지하기</button>
+                <style>
+                body {
+                    background-image:url('thumb_520390_1602148014_2.jpg');
+                    background-repeat: no-repeat;
+                    background-size: 100% 100%;
+                }
+                `;
+            } else if (path === 'maintainHydrogenCarFunds') {
+                storyElement.textContent = "수소자동차 지원금을 유지하기로 했습니다. 재정은 증가했지만 지구기온이 높아졌습니다. 지역특산물 지원금 확대 요구가 들어왔습니다. 지원금을 확대하거나 유지할 수 있습니다. 어떻게 하시겠습니까?";
+                choicesElement.innerHTML = `
+                    <button onclick="choosePath('expandLocalSpecialtyFunds', -0.2, -5)">확대하기</button>
+                    <button onclick="choosePath('maintainLocalSpecialtyFunds', 0.2, 5)">유지하기</button>
+                <style>
+                body {
+                    background-image:url('apples-8212695_1920.jpg');
+                    background-repeat: no-repeat;
+                    background-size: 100% 100%;
+                }
+                `;
+            } else if (path === 'expandHydrogenCarFunds') {
+                storyElement.textContent = "수소자동차 지원금을 확충하기로 했습니다. 재정이 감소했지만 지구기온이 낮아졌습니다. 지역특산물 지원금 확대 요구가 들어왔습니다. 지원금을 확대하거나 유지할 수 있습니다. 어떻게 하시겠습니까?";
+                choicesElement.innerHTML = `
+                    <button onclick="choosePath('expandLocalSpecialtyFunds', -0.2, -5)">확대하기</button>
+                    <button onclick="choosePath('maintainLocalSpecialtyFunds', 0.2, 5)">유지하기</button>
+                 <style>
+                body {
+                    background-image:url('apples-8212695_1920.jpg');
+                    background-repeat: no-repeat;
+                    background-size: 100% 100%;
+                }
+                `;
+            } else if (path === 'maintainLocalSpecialtyFunds') {
+                storyElement.textContent = "지역특산물의 지원금을 유지하였습니다. 재정이 증가하였지만 지구기온이 높아졌습니다. 친환경 연료 산업 지원 요구가 들어왔습니다. 지원하거나 무시할 수 있습니다. 어떻게 하시겠습니까?";
+                choicesElement.innerHTML = `
+                    <button onclick="choosePath('supportEcoFuel', -0.2, -5)">지원하기</button>
+                    <button onclick="choosePath('ignoreEcoFuel', 0.2, 5)">무시하기</button>
+                 <style>
+                body {
+                    background-image:url('windmills-7403764_1920.jpg');
+                    background-repeat: no-repeat;
+                    background-size: 100% 100%;
+                }
+                `;
+            } else if (path === 'expandLocalSpecialtyFunds') {
+                storyElement.textContent = "지역특산물의 지원금을 확대하였습니다. 재정이 감소하였지만 지구기온은 낮아졌습니다. 친환경 연료 산업 지원 요구가 들어왔습니다. 지원하거나 무시할 수 있습니다. 어떻게 하시겠습니까?";
+                choicesElement.innerHTML = `
+                    <button onclick="choosePath('supportEcoFuel', -0.2, -5)">지원하기</button>
+                    <button onclick="choosePath('ignoreEcoFuel', 0.2, 5)">무시하기</button>
+                 <style>
+                body {
+                    background-image:url('windmills-7403764_1920.jpg');
+                    background-repeat: no-repeat;
+                    background-size: 100% 100%;
+                }
+                `;
+            } else if (path === 'supportEcoFuel') {
+                storyElement.textContent = "친환경 연료 산업을 지원하기로 결정했습니다. 지구 기온은 낮아졌지만, 재정이 감소했습니다. 이제 에너지 효율 개선을 위해 추가적인 재정 투자가 필요합니다. 투자하거나 투자를 보류할 수 있습니다. 어떻게 하시겠습니까?";
+                choicesElement.innerHTML = `
+                    <button onclick="choosePath('investEnergyEfficiency', -0.2, -5)">투자하기</button>
+                    <button onclick="choosePath('delayInvestment', 0.2, 5)">보류하기</button>
+                 <style>
+                body {
+                    background-image:url('unnamed.jpg');
+                    background-repeat: no-repeat;
+                    background-size: 100% 100%;
+                }
+                `;
+            } else if (path === 'ignoreEcoFuel') {
+                storyElement.textContent = "친환경 연료 산업 지원을 무시했습니다. 재정이 증가했지만 지구 기온이 상승했습니다. 이제 에너지 효율 개선을 위해 추가적인 재정 투자가 필요합니다. 투자하거나 투자를 보류할 수 있습니다. 어떻게 하시겠습니까?";
+                choicesElement.innerHTML = `
+                    <button onclick="choosePath('investEnergyEfficiency', -0.2, -5)">투자하기</button>
+                    <button onclick="choosePath('delayInvestment', 0.2, 5)">보류하기</button>
+                <style>
+                body {
+                    background-image:url('unnamed.jpg');
+                    background-repeat: no-repeat;
+                    background-size: 100% 100%;
+                }
+                `;
+            } else if (path === 'investEnergyEfficiency') {
+                storyElement.textContent = "에너지 효율 개선에 투자를 결정했습니다. 지구 기온이 낮아졌지만 재정이 감소했습니다. 환경 보호 규제를 강화할지 완화할지 선택해야 합니다. 어떻게 하시겠습니까?";
+                choicesElement.innerHTML = `
+                    <button onclick="choosePath('strengthenRegulations', -0.2, -5)">강화하기</button>
+                    <button onclick="choosePath('easeRegulations', 0.2, 5)">완화하기</button>
+                <style>
+                body {
+                    background-image:url('soil-8080788_1920.jpg');
+                    background-repeat: no-repeat;
+                    background-size: 100% 100%;
+                }
+                `;
+            } else if (path === 'delayInvestment') {
+                storyElement.textContent = "에너지 효율 개선 투자를 보류했습니다. 재정이 증가했지만 지구 기온이 상승했습니다. 환경 보호 규제를 강화할지 완화할지 선택해야 합니다. 어떻게 하시겠습니까?";
+                choicesElement.innerHTML = `
+                    <button onclick="choosePath('strengthenRegulations', -0.2, -5)">강화하기</button>
+                    <button onclick="choosePath('easeRegulations', 0.2, 5)">완화하기</button>
+                 <style>
+                body {
+                    background-image:url('soil-8080788_1920.jpg');
+                    background-repeat: no-repeat;
+                    background-size: 100% 100%;
+                }
+                `;
+            } else if (path === 'strengthenRegulations') {
+                storyElement.textContent = "환경 보호 규제를 강화했습니다. 지구 기온이 낮아졌지만 재정이 감소했습니다. 지속 가능한 도시 개발을 추진할지 기존 방식을 유지할지 결정해야 합니다. 어떻게 하시겠습니까?";
+                choicesElement.innerHTML = `
+                    <button onclick="choosePath('sustainableDevelopment', -0.2, -5)">지속 가능한 개발</button>
+                    <button onclick="choosePath('maintainStatusQuo', 0.2, 5)">기존 방식 유지</button>
+                 <style>
+                body {
+                    background-image:url('Hong_Kong_Harbour_Night_2019-06-11.jpg');
+                    background-repeat: no-repeat;
+                    background-size: 100% 100%;
+                }
+                `;
+            } else if (path === 'easeRegulations') {
+                storyElement.textContent = "환경 보호 규제를 완화했습니다. 재정이 증가했지만 지구 기온이 상승했습니다. 지속 가능한 도시 개발을 추진할지 기존 방식을 유지할지 결정해야 합니다. 어떻게 하시겠습니까?";
+                choicesElement.innerHTML = `
+                    <button onclick="choosePath('sustainableDevelopment', -0.2, -5)">지속 가능한 개발</button>
+                    <button onclick="choosePath('maintainStatusQuo', 0.2, 5)">기존 방식 유지</button>
+                <style>
+                body {
+                    background-image:url('Hong_Kong_Harbour_Night_2019-06-11.jpg');
+                    background-repeat: no-repeat;
+                    background-size: 100% 100%;
+                }
+                `;
+            } else if (path === 'sustainableDevelopment') {
+                storyElement.textContent = "지속 가능한 도시 개발을 추진하기로 결정했습니다. 지구 기온이 낮아졌지만 재정이 감소했습니다. 마지막으로, 기후 변화 대응을 위해 국제 협력을 강화할지 국내 정책을 우선할지 결정해야 합니다. 어떻게 하시겠습니까?";
+                choicesElement.innerHTML = `
+                    <button onclick="choosePath('internationalCooperation', -0.2, -5)">국제 협력 강화</button>
+                    <button onclick="choosePath('domesticPolicy', 0.2, 5)">국내 정책 우선</button>
+                <style>
+                body {
+                    background-image:url('images.jpg');
+                    background-repeat: no-repeat;
+                    background-size: 100% 100%;
+                }
+                `;
+            } else if (path === 'maintainStatusQuo') {
+                storyElement.textContent = "기존 방식을 유지했습니다. 재정이 증가했지만 지구 기온이 상승했습니다. 마지막으로, 기후 변화 대응을 위해 국제 협력을 강화할지 국내 정책을 우선할지 결정해야 합니다. 어떻게 하시겠습니까?";
+                choicesElement.innerHTML = `
+                    <button onclick="choosePath('internationalCooperation', -0.2, -5)">국제 협력 강화</button>
+                    <button onclick="choosePath('domesticPolicy', 0.2, 5)">국내 정책 우선</button>
+                <style>
+                body {
+                    background-image:url('images.jpg');
+                    background-repeat: no-repeat;
+                    background-size: 100% 100%;
+                }
+                `;
+            } else if (path === 'internationalCooperation') {
+                if (earthTemperature <= 11.6) {
+                    storyElement.textContent = "국제 협력을 강화하여 기후 변화에 대응하기로 결정했습니다. 지구 기온이 낮아졌고, 지속 가능한 미래를 위해 노력한 결과, 당신은 성공적인 대통령으로 평가받았습니다!";
+                } else {
+                    storyElement.textContent = "국제 협력을 강화하여 기후 변화에 대응하기로 결정했습니다. 지구 기온이 낮아졌지만 재정이 감소했습니다. 지속 가능한 미래를 위해 노력한 결과, 당신은 성공적인 대통령으로 평가받았습니다!";
+                }
+                choicesElement.innerHTML = `<button onclick="resetGame()">다시 시작</button>`;
+            } else if (path === 'domesticPolicy') {
+                if (earthTemperature <= 11.6) {
+                    storyElement.textContent = "국내 정책을 우선하여 기후 변화에 대응하기로 결정했습니다. 재정이 증가했으며, 지속 가능한 미래를 위해 노력한 결과, 당신은 성공적인 대통령으로 평가받았습니다!";
+                } else {
+                    storyElement.textContent = "국내 정책을 우선하여 기후 변화에 대응하기로 결정했습니다. 재정이 증가했지만 지구 기온이 상승했습니다. 미래 세대를 위한 환경 정책에 더 많은 노력이 필요합니다. 다시 도전하시겠습니까?";
+                }
+                choicesElement.innerHTML = `<button onclick="resetGame()">다시 시작</button>`;
+            }
+        }
+    </script>
+</body>
+</html>
